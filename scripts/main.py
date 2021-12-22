@@ -6,11 +6,11 @@ def initial_idea(x, y, w1, w2):
     return max(1, min(5, x + (y - 0.5) * w1) - (1 - y) / w2 * x)
 
 
-def compute_scotrip(x, y, w1, w2):
+def compute_contrip(x, y, w1, w2):
     return min(5, x + (y - 0.5) * w1) - (1 - y) / w2 * x
 
 
-def compute_scotrip_now2(x, y, w1):
+def compute_contrip_now2(x, y, w1):
     return min(5, x + (y - 0.5) * w1) - (1 - y) / (6 - x)
 
 
@@ -41,7 +41,7 @@ def compute_scotrip_now2(x, y, w1):
 )
 def main(tripadvisor_rating, consensus_value, weight_1, weight_2, output):
     
-    score = compute_scotrip(tripadvisor_rating, consensus_value, weight_1, weight_2)
+    score = compute_contrip(tripadvisor_rating, consensus_value, weight_1, weight_2)
     print(score)
 
 
