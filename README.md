@@ -1,6 +1,7 @@
 # ContripScore
 ContripScore is essentially a score that combines the Tripadvisor rating (TAR) and the consensus rating from NLP analysis (by Nguyen et al. in 2020). This novel scoring system has the advantage of bringing together both sources of information into a single score. Furthermore, as the consensus ranking of the NLP analysis, our ContripScore allows differentiation of 100% of the TA ratings while providing better interpretability. The increased interpretability arises from our ContripScore representing a value between 0 and 5. This range, close to TAR, could improve the ranking and the user's understanding of how good it is the experience they are buying. 
 
+<img src="figures/contrip_fig_1.png" alt="alt text" width=1000 height="whatever">
 
 # Contents
 - [Installation](#Installation)

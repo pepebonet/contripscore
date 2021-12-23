@@ -15,7 +15,7 @@ def compute_contrip(x, y, w1, w2):
 def generate_dataframe(score, consensus):
 
     df = pd.DataFrame()
-    df['Score'] = np.ndarray.flatten(score, 'F')
+    df['ContripScore'] = np.ndarray.flatten(score, 'F')
     df['NLP Consensus'] = np.asarray([consensus] * 5).flatten()
     df['Rating'] = np.asarray(
         [['TA Rating: 1'] * 51, ['TA Rating: 2'] * 51, ['TA Rating: 3'] * 51, 
@@ -27,7 +27,7 @@ def generate_dataframe(score, consensus):
 def generate_dataframe_2(score, rating):
 
     df = pd.DataFrame()
-    df['Score'] = score.flatten()
+    df['ContripScore'] = score.flatten()
     df['TA Rating'] = np.asarray([rating] * 6).flatten()
     df['NLP Consensus'] = np.asarray(
         [['NLP Consensus: 0.0'] * 41, ['NLP Consensus: 0.2'] * 41, 
@@ -41,7 +41,7 @@ def generate_plots_1(df, score, output):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    sns.scatterplot(data=df, x="NLP Consensus", y="Score", hue="Rating", 
+    sns.scatterplot(data=df, x="NLP Consensus", y="ContripScore", hue="Rating", 
         palette=['#d7191c', '#fdae61', '#fee08b', '#abdda4', '#2b83ba'])
 
     ax.spines['top'].set_visible(False)
@@ -73,7 +73,7 @@ def generate_plots_2(df, score, output):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    sns.scatterplot(data=df, x="TA Rating", y="Score", hue="NLP Consensus", 
+    sns.scatterplot(data=df, x="TA Rating", y="ContripScore", hue="NLP Consensus", 
         palette=['#d7191c', '#fdae61', '#fee08b', '#abdda4', '#2b83ba', '#5e4fa2'])
 
     ax.spines['top'].set_visible(False)
