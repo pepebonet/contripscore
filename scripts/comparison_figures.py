@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 def compute_contrip(x, y, w1, w2):
 
     return np.minimum(
-        np.full((y.shape[0], x.shape[1]), 5), x + (y - 0.5) * w1) - (1 - y) / w2 * x
+        np.full((y.shape[0], x.shape[1]), 5), x + (y - 0.5) * w1) \
+            - (1 - y) / w2 * x - (5 - x) / 100
 
 
 def generate_dataframe(score, consensus):
@@ -17,13 +18,26 @@ def generate_dataframe(score, consensus):
     df['Score'] = np.ndarray.flatten(score, 'F')
     df['NLP Consensus'] = np.asarray([consensus] * 5).flatten()
     df['Rating'] = np.asarray(
-        [['TA Rating: 1'] * 200, ['TA Rating: 2'] * 200, ['TA Rating: 3'] * 200, 
-        ['TA Rating: 4'] * 200, ['TA Rating: 5'] * 200]).flatten()
+        [['TA Rating: 1'] * 51, ['TA Rating: 2'] * 51, ['TA Rating: 3'] * 51, 
+        ['TA Rating: 4'] * 51, ['TA Rating: 5'] * 51]).flatten()
 
     return df
 
 
-def generate_plots(df, score, output):
+def generate_dataframe_2(score, rating):
+
+    df = pd.DataFrame()
+    df['Score'] = score.flatten()
+    df['TA Rating'] = np.asarray([rating] * 6).flatten()
+    df['NLP Consensus'] = np.asarray(
+        [['NLP Consensus: 0.0'] * 41, ['NLP Consensus: 0.2'] * 41, 
+        ['NLP Consensus: 0.4'] * 41, ['NLP Consensus: 0.6'] * 41, 
+        ['NLP Consensus: 0.8'] * 41, ['NLP Consensus: 1.0'] * 41]).flatten()
+
+    return df
+
+
+def generate_plots_1(df, score, output):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
@@ -44,16 +58,71 @@ def generate_plots(df, score, output):
         )
 
     ax.legend(
-        bbox_to_anchor=(0., 1.2, 1., .102),
+        bbox_to_anchor=(0., 1.05, 1., .102),
         handles=custom_lines, loc='upper center', 
         facecolor='white', ncol=3, fontsize=8, frameon=False
     )
 
     fig.tight_layout()
-    out_file = os.path.join(output, 'contrip_score.pdf')
+    out_file = os.path.join(output, 'contrip_score_consensus.pdf')
     plt.savefig(out_file)
     plt.close()
 
+
+def generate_plots_2(df, score, output):
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+
+    sns.scatterplot(data=df, x="TA Rating", y="Score", hue="NLP Consensus", 
+        palette=['#d7191c', '#fdae61', '#fee08b', '#abdda4', '#2b83ba', '#5e4fa2'])
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    custom_lines = []
+    for el in [['NLP Consensus: 0.0', '#d7191c'], ['NLP Consensus: 0.2', '#fdae61'], 
+        ['NLP Consensus: 0.4', '#fee08b'], ['NLP Consensus: 0.6', '#abdda4'], 
+            ['NLP Consensus: 0.8', '#2b83ba'], ['NLP Consensus: 1.0', '#5e4fa2']]:
+
+        custom_lines.append(
+            plt.plot([],[], marker="o", ms=7, ls="", mec='black', 
+            mew=0, color=el[1], label=el[0])[0] 
+        )
+
+    ax.legend(
+        bbox_to_anchor=(0., 1.05, 1., .102),
+        handles=custom_lines, loc='upper center', 
+        facecolor='white', ncol=3, fontsize=8, frameon=False
+    )
+
+    fig.tight_layout()
+    out_file = os.path.join(output, 'contrip_score_rating.pdf')
+    plt.savefig(out_file)
+    plt.close()
+
+
+def generate_figure_1(weight_1, weight_2, output):
+
+    rating = np.linspace(1, 5, 5).reshape(1, 5)
+    consensus = np.linspace(0, 1, 51).reshape(51, 1)
+
+    score = compute_contrip(rating, consensus, weight_1, weight_2)
+
+    df = generate_dataframe(score, consensus)
+
+    generate_plots_1(df, score, output)
+
+
+def generate_figure_2(weight_1, weight_2, output):
+
+    rating = np.linspace(1, 5, 41).reshape(1, 41)
+    consensus = np.linspace(0, 1, 6).reshape(6, 1)
+    
+    score = compute_contrip(rating, consensus, weight_1, weight_2)
+
+    df = generate_dataframe_2(score, rating)
+
+    generate_plots_2(df, score, output)
 
 
 # ------------------------------------------------------------------------------
@@ -75,17 +144,8 @@ def generate_plots(df, score, output):
 )
 def main(weight_1, weight_2, output):
     
-    rating = np.linspace(1, 5, 5).reshape(1, 5)
-    consensus = np.linspace(0, 1, 200).reshape(200, 1)
-
-    score = compute_contrip(rating, consensus, weight_1, weight_2)
-
-    df = generate_dataframe(score, consensus)
-
-    generate_plots(df, score, output)
-
-    import pdb;pdb.set_trace()
-
+    generate_figure_1(weight_1, weight_2, output)
+    generate_figure_2(weight_1, weight_2, output)
 
 
 if __name__ == '__main__':
