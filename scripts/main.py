@@ -29,7 +29,7 @@ def compute_contrip_now2(x, y, w1):
     help='value of consensus analysis through NLP'
 )
 @click.option(
-    '-w1', '--weight_1', default=1.5, 
+    '-w1', '--weight_1', default=0.5, 
     help='weight for the importance of the consensus value'
 )
 @click.option(
