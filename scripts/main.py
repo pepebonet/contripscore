@@ -7,7 +7,7 @@ def initial_idea(x, y, w1, w2):
 
 
 def compute_contrip(x, y, w1, w2):
-    return min(5, x + (y - 0.5) * w1) - (1 - y) / w2 * x
+    return min(5, x + (y - 0.5) * w1) - (1 - y) / w2 * x - (5 - x) / 100
 
 
 def compute_contrip_now2(x, y, w1):
@@ -21,7 +21,7 @@ def compute_contrip_now2(x, y, w1):
 
 @click.command(short_help='script to compute the score of a tripadvisor rating')
 @click.option(
-    '-tr', '--tripadvisor_rating', default=5, 
+    '-tr', '--tripadvisor_rating', default=5.0, 
     help='rating of tripadvisor hotel'
 )
 @click.option(
