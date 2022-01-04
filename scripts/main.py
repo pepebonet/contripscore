@@ -14,6 +14,10 @@ def compute_contrip_now2(x, y, w1):
     return min(5, x + (y - 0.5) * w1) - (1 - y) / (6 - x)
 
 
+def scaling(score):
+    return (score - 0.61) / (5 - 0.61) * 4 + 1
+
+
 
 # ------------------------------------------------------------------------------
 # CLICK
@@ -40,9 +44,14 @@ def compute_contrip_now2(x, y, w1):
     '-o', '--output', default='', help='output folder'
 )
 def main(tripadvisor_rating, consensus_value, weight_1, weight_2, output):
+
+    assert tripadvisor_rating >= 1 
     
     score = compute_contrip(tripadvisor_rating, consensus_value, weight_1, weight_2)
     print(score)
+
+    new_score = scaling(score)
+    print(new_score)
 
 
 
