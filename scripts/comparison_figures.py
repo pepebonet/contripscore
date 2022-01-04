@@ -126,7 +126,7 @@ def generate_figure_1(weight_1, weight_2, scale, output):
         score = scaling(score)
 
     df = generate_dataframe(score, consensus)
-
+    
     generate_plots_1(df, score, output, scale)
 
 
@@ -141,7 +141,7 @@ def generate_figure_2(weight_1, weight_2, scale, output):
         score = scaling(score)
 
     df = generate_dataframe_2(score, rating)
-
+    
     generate_plots_2(df, score, output, scale)
 
 
