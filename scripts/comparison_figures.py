@@ -19,11 +19,11 @@ def scaling(score):
 def generate_dataframe(score, consensus):
 
     df = pd.DataFrame()
-    df['ContripScore'] = np.ndarray.flatten(score, 'F')
-    df['NLP Consensus'] = np.asarray([consensus] * 5).flatten()
+    df['ConTrip Score'] = np.ndarray.flatten(score, 'F')
+    df['Consensus Score'] = np.asarray([consensus] * 5).flatten()
     df['Rating'] = np.asarray(
-        [['TA Rating: 1'] * 51, ['TA Rating: 2'] * 51, ['TA Rating: 3'] * 51, 
-        ['TA Rating: 4'] * 51, ['TA Rating: 5'] * 51]).flatten()
+        [['Rating: 1'] * 51, ['Rating: 2'] * 51, ['Rating: 3'] * 51, 
+        ['Rating: 4'] * 51, ['Rating: 5'] * 51]).flatten()
 
     return df
 
@@ -31,12 +31,12 @@ def generate_dataframe(score, consensus):
 def generate_dataframe_2(score, rating):
 
     df = pd.DataFrame()
-    df['ContripScore'] = score.flatten()
-    df['TA Rating'] = np.asarray([rating] * 6).flatten()
-    df['NLP Consensus'] = np.asarray(
-        [['NLP Consensus: 0.0'] * 41, ['NLP Consensus: 0.2'] * 41, 
-        ['NLP Consensus: 0.4'] * 41, ['NLP Consensus: 0.6'] * 41, 
-        ['NLP Consensus: 0.8'] * 41, ['NLP Consensus: 1.0'] * 41]).flatten()
+    df['ConTrip Score'] = score.flatten()
+    df['Rating'] = np.asarray([rating] * 6).flatten()
+    df['Consensus Score'] = np.asarray(
+        [['Consensus: 0.0'] * 41, ['Consensus: 0.2'] * 41, 
+        ['Consensus: 0.4'] * 41, ['Consensus: 0.6'] * 41, 
+        ['Consensus: 0.8'] * 41, ['Consensus: 1.0'] * 41]).flatten()
 
     return df
 
@@ -45,16 +45,16 @@ def generate_plots_1(df, score, output, scale):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    sns.scatterplot(data=df, x="NLP Consensus", y="ContripScore", hue="Rating", 
+    sns.scatterplot(data=df, x="Consensus Score", y="ConTrip Score", hue="Rating", 
         palette=['#d7191c', '#fdae61', '#fee08b', '#abdda4', '#2b83ba'])
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
     custom_lines = []
-    for el in [['TA Rating: 1', '#d7191c'], ['TA Rating: 2', '#fdae61'], 
-        ['TA Rating: 3', '#fee08b'], ['TA Rating: 4', '#abdda4'], 
-            ['TA Rating: 5', '#2b83ba']]:
+    for el in [['Rating: 1', '#d7191c'], ['Rating: 2', '#fdae61'], 
+        ['Rating: 3', '#fee08b'], ['Rating: 4', '#abdda4'], 
+            ['Rating: 5', '#2b83ba']]:
 
         custom_lines.append(
             plt.plot([],[], marker="o", ms=7, ls="", mec='black', 
@@ -82,16 +82,16 @@ def generate_plots_2(df, score, output, scale):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
-    sns.scatterplot(data=df, x="TA Rating", y="ContripScore", hue="NLP Consensus", 
+    sns.scatterplot(data=df, x="Rating", y="ConTrip Score", hue="Consensus Score", 
         palette=['#d7191c', '#fdae61', '#fee08b', '#abdda4', '#2b83ba', '#5e4fa2'])
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
     custom_lines = []
-    for el in [['NLP Consensus: 0.0', '#d7191c'], ['NLP Consensus: 0.2', '#fdae61'], 
-        ['NLP Consensus: 0.4', '#fee08b'], ['NLP Consensus: 0.6', '#abdda4'], 
-            ['NLP Consensus: 0.8', '#2b83ba'], ['NLP Consensus: 1.0', '#5e4fa2']]:
+    for el in [['Consensus: 0.0', '#d7191c'], ['Consensus: 0.2', '#fdae61'], 
+        ['Consensus: 0.4', '#fee08b'], ['Consensus: 0.6', '#abdda4'], 
+            ['Consensus: 0.8', '#2b83ba'], ['Consensus: 1.0', '#5e4fa2']]:
 
         custom_lines.append(
             plt.plot([],[], marker="o", ms=7, ls="", mec='black', 
@@ -110,7 +110,7 @@ def generate_plots_2(df, score, output, scale):
         out_file = os.path.join(output, 'contrip_score_rating_scaling.pdf')
     else:
         out_file = os.path.join(output, 'contrip_score_rating.pdf')
-        
+
     plt.savefig(out_file)
     plt.close()
 
