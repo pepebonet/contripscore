@@ -12,6 +12,10 @@ def compute_contrip(x, y, w1, w2):
             - (1 - y) / w2 * x - (5 - x) / 100
 
 
+def scaling(score):
+    return (score - 0.61) / (5 - 0.61) * 4 + 1
+
+
 def generate_dataframe(score, consensus):
 
     df = pd.DataFrame()
@@ -37,7 +41,7 @@ def generate_dataframe_2(score, rating):
     return df
 
 
-def generate_plots_1(df, score, output):
+def generate_plots_1(df, score, output, scale):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
@@ -64,12 +68,17 @@ def generate_plots_1(df, score, output):
     )
 
     fig.tight_layout()
-    out_file = os.path.join(output, 'contrip_score_consensus.pdf')
+
+    if scale:
+        out_file = os.path.join(output, 'contrip_score_consensus_scaling.pdf')
+    else:
+        out_file = os.path.join(output, 'contrip_score_consensus.pdf')
+
     plt.savefig(out_file)
     plt.close()
 
 
-def generate_plots_2(df, score, output):
+def generate_plots_2(df, score, output, scale):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
@@ -96,33 +105,44 @@ def generate_plots_2(df, score, output):
     )
 
     fig.tight_layout()
-    out_file = os.path.join(output, 'contrip_score_rating.pdf')
+
+    if scale:
+        out_file = os.path.join(output, 'contrip_score_rating_scaling.pdf')
+    else:
+        out_file = os.path.join(output, 'contrip_score_rating.pdf')
+        
     plt.savefig(out_file)
     plt.close()
 
 
-def generate_figure_1(weight_1, weight_2, output):
+def generate_figure_1(weight_1, weight_2, scale, output):
 
     rating = np.linspace(1, 5, 5).reshape(1, 5)
     consensus = np.linspace(0, 1, 51).reshape(51, 1)
 
     score = compute_contrip(rating, consensus, weight_1, weight_2)
 
+    if scale:
+        score = scaling(score)
+
     df = generate_dataframe(score, consensus)
 
-    generate_plots_1(df, score, output)
+    generate_plots_1(df, score, output, scale)
 
 
-def generate_figure_2(weight_1, weight_2, output):
+def generate_figure_2(weight_1, weight_2, scale, output):
 
     rating = np.linspace(1, 5, 41).reshape(1, 41)
     consensus = np.linspace(0, 1, 6).reshape(6, 1)
     
     score = compute_contrip(rating, consensus, weight_1, weight_2)
 
+    if scale:
+        score = scaling(score)
+
     df = generate_dataframe_2(score, rating)
 
-    generate_plots_2(df, score, output)
+    generate_plots_2(df, score, output, scale)
 
 
 # ------------------------------------------------------------------------------
@@ -140,12 +160,15 @@ def generate_figure_2(weight_1, weight_2, output):
     help='weight for the importance of the consensus value 2'
 )
 @click.option(
+    '-sf', '--scaling_flag', is_flag=True, help='flag to perform the scaling'
+)
+@click.option(
     '-o', '--output', default='', help='output folder'
 )
-def main(weight_1, weight_2, output):
+def main(weight_1, weight_2, scaling_flag, output):
     
-    generate_figure_1(weight_1, weight_2, output)
-    generate_figure_2(weight_1, weight_2, output)
+    generate_figure_1(weight_1, weight_2, scaling_flag, output)
+    generate_figure_2(weight_1, weight_2, scaling_flag, output)
 
 
 if __name__ == '__main__':
