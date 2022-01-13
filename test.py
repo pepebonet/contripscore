@@ -1,4 +1,5 @@
-from hello import add
+from scripts.main import *
 
-def test_add():
-    assert add(1,2) == 3
+
+def test_contrip():
+    assert compute_contrip(4.7, 0.5, 0.5, 10) == 4.462
