@@ -1,3 +1,5 @@
+[![ConTrip Score](https://github.com/pepebonet/contripscore/actions/workflows/main.yml/badge.svg)](https://github.com/pepebonet/contripscore/actions/workflows/main.yml)
+
 # ContripScore
 ContripScore is essentially a score that combines an Internet platform rating and a consensus rating from sentiment analysis (For instance, by Nguyen et al. 2020). This novel scoring system has the advantage of bringing together both sources of information (sentiment analysis and overall rating) into a single score. Furthermore, as the consensus ranking of the sentiment analysis, our ContripScore allows differentiation of closely rated items while providing better interpretability. The increased interpretability arises from our ContripScore representing a value between 0 and 5 (without scaling. Figure below A and B) or 1 and 5 (with scaling. Figure C and D) . This range, related to any platform, could improve the ranking and the user's understanding of how good it is the experience they are buying. 
 
